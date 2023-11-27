@@ -7,9 +7,11 @@
     <div class="row">
         <section class="col-md-4" aria-labelledby="gettingStartedTitle">
             <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-            is an ideal platform for building RESTful applications on the .NET Framework.</p>
+            <p>
+                ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+                a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+                is an ideal platform for building RESTful applications on the .NET Framework.
+            </p>
             <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
         </section>
         <section class="col-md-4" aria-labelledby="librariesTitle">
@@ -23,4 +25,175 @@
             <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
         </section>>
     </div>
+    <hr />
+
+    <h2>Tur Paket</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="panel panel-success">
+
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                       Yeni Tur Paketi Ekle
+                    </h4>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label for="Adi" class="control-label col-md-2">Ad</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBox("Adi", "", new { @class = "form-control", placeholder = "Ad" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fiyat" class="control-label col-md-2">Fiyat</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBox("Fiyat", "", new { @class = "form-control", placeholder = "Fiyat", type = "number" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Sure" class="control-label col-md-2">Süre</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBox("Sure", "", new { @class = "form-control", placeholder = "Süre", type = "number" })
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Lokasyon" class="control-label col-md-2">Lokasyon</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBox("Lokasyon", "", new { @class = "form-control", placeholder = "Lokasyon" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Resim" class="control-label col-md-2">Resim</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBox("Resim", "", new { @class = "form-control", placeholder = "Resim" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Detay" class="control-label col-md-2">Detay</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBox("Detay", "", new { @class = "form-control", placeholder = "Detay" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="panel-footer">
+                    <button id="btnCreate" type="button" class="btn btn-success">Create</button>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-6">
+
+            <ul id="turPaket" class="list-group"></ul>
+
+        </div>
+    </div>
+
+    <script>
+
+    function LoadEmployees() {
+
+        var ul = $("#turPaket");
+        ul.empty();
+
+        $.ajax({
+            method: "GET",
+            url: "../api/values"
+        }).done(function (response) {
+            //console.log(response);
+
+            if (response == null)
+                return;
+
+            for (var i = 0; i < response.length; i++) {
+                var pkt = response[i];
+                var li = $("<li class='list-group-item'>" + pkt.Adi + " " +
+                    "(Fiyat : " + pkt.Fiyat + " - Süre : " + pkt.Sure + " - Lokasyon : " + pkt.Lokasyon + " - Resim : " + pkt.Resim + " - Detay : "+ pkt.Detay+ "$)</li>")
+
+                ul.append(li);
+            }
+
+        }).fail(function () {
+            alert("Hata oluştu.")
+        });
+    }
+
+    function CreateEmployee() {
+
+        var adi = $("#Adi").val();
+        var fiyat = $("#Fiyat").val();
+        var sure = $("#Sure").val();
+        var lokasyon = $("#Lokasyon").val();
+        var resim = $("#Resim").val();
+        var detay = $("#Detay").val();
+
+        var pkt = {
+            "Adi": adi,
+            "Fiyat": fiyat,
+            "Sure": sure,
+            "Lokasyon": lokasyon,
+            "Resim": resim,
+            "Detay": detay
+        };
+
+        $.ajax({
+            method: "POST",
+            url: "../api/values",
+            contentType: "application/json", // contentType parametresi eklenmeli
+            data: JSON.stringify(pkt)
+          
+        }).done(function (response, statusText, jqXHR) {
+            console.log(data);
+            console.log(response);
+            console.log(statusText);
+            console.log(jqXHR);
+
+            if(jqXHR.status == 201)
+            {
+                LoadEmployees();
+            }
+
+            console.log("status : " + jqXHR.status);
+            console.log("statusText : " + jqXHR.statusText);
+            console.log("location : " + jqXHR.getResponseHeader("location"));
+
+
+        }).fail(function () {
+            alert("Hata oluştu.");
+        });
+
+        }
+
+
+    $(function () {
+
+        LoadEmployees();
+
+        $("#btnCreate").click(CreateEmployee);
+
+    });
+
+    </script>
 </main>
