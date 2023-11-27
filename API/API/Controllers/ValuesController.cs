@@ -10,7 +10,7 @@ namespace API.Controllers
 {
     public class ValuesController : ApiController
     {
-        dbGoTripEntities1 db = new dbGoTripEntities1 ();
+        dbGoTripEntities1 db = new dbGoTripEntities1();
         // GET api/values
         public IQueryable<tblTurPaket> Get()
         {
@@ -21,7 +21,7 @@ namespace API.Controllers
         // GET api/values/5
         public HttpResponseMessage Get(int id)
         {
-            tblTurPaket paket = db.tblTurPakets.FirstOrDefault(i=>i.Id==id);
+            tblTurPaket paket = db.tblTurPakets.FirstOrDefault(i => i.Id == id);
             if (paket == null)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Id'si {id} olan çalışan bulunamadı.");
@@ -39,13 +39,11 @@ namespace API.Controllers
             {
                 db.tblTurPakets.Add(tblTurPaket);
 
-                if (db.SaveChanges()>0)
+                if (db.SaveChanges() > 0)
                 {
                     HttpResponseMessage message = Request.CreateResponse(HttpStatusCode.Created, tblTurPaket);
                     message.Headers.Location = new Uri(Request.RequestUri + "/" + tblTurPaket.Id);
                     return message;
-
-
                 }
                 else
                 {
@@ -59,13 +57,68 @@ namespace API.Controllers
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody] string value)
+        public HttpResponseMessage Put([FromBody] int id,[FromUri]tblTurPaket tblTurPaket)
         {
+            try
+            {
+                tblTurPaket tbl = db.tblTurPakets.FirstOrDefault(i => i.Id == id);
+                if (tbl == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Tur Paket Id:" + tbl.Id);
+                }
+                else
+                {
+                    tbl.Adi = tblTurPaket.Adi;
+                    tbl.Fiyat = tblTurPaket.Fiyat;
+                    tbl.Sure = tblTurPaket.Sure;
+                    tbl.Lokasyon = tblTurPaket.Lokasyon;
+                    tbl.Resim = tblTurPaket.Resim;
+                    tbl.Detay = tblTurPaket.Detay;
+                    if (db.SaveChanges() > 0)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, tblTurPaket);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Güncelleme Yapılamadı");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
         }
 
         // DELETE api/values/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            try
+            {
+                tblTurPaket paket = db.tblTurPakets.FirstOrDefault(i => i.Id == id);
+                if (paket == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Tur Paket Id:" + id);
+                }
+                else
+                {
+                    db.tblTurPakets.Remove(paket);
+                    if (db.SaveChanges()>0)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, "Tur Paket Id:" + id);
+                    }
+                    else
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Kayıt Silinemedi. Tur Paket Id:" + id);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+
         }
     }
 }
