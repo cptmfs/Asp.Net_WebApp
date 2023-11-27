@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbGoTripModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tabloKurumsal">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Baslik" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ozet" Type="nvarchar" MaxLength="250" />
+    <Property Name="Detay" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="tblAyarlar">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Mail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Telefon" Type="nvarchar" MaxLength="50" />
+    <Property Name="Adres" Type="nvarchar(max)" />
+    <Property Name="Youtube" Type="nvarchar" MaxLength="50" />
+    <Property Name="Instagram" Type="nvarchar" MaxLength="50" />
+    <Property Name="Facebook" Type="nvarchar" MaxLength="50" />
+    <Property Name="Logo" Type="nvarchar" MaxLength="50" />
+    <Property Name="SiteOzet" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="tblBlog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Baslik" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ozet" Type="nvarchar(max)" />
+    <Property Name="KategoriId" Type="int" />
+    <Property Name="Resim" Type="nvarchar" MaxLength="200" />
+    <Property Name="Detay" Type="nvarchar(max)" />
+    <Property Name="Tarih" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tblBlogKategori">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ad" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblGaleri">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Baslik" Type="nvarchar" MaxLength="100" />
+    <Property Name="KategoriId" Type="int" />
+    <Property Name="Resim" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="tblGaleriKategori">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Adi" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblTurPaket">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Adi" Type="nvarchar" MaxLength="50" />
+    <Property Name="Fiyat" Type="nvarchar" MaxLength="50" />
+    <Property Name="Sure" Type="nvarchar" MaxLength="50" />
+    <Property Name="Lokasyon" Type="nvarchar" MaxLength="200" />
+    <Property Name="Resim" Type="nvarchar" MaxLength="200" />
+    <Property Name="Detay" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_tblBlog_tblBlogKategori">
+    <End Role="tblBlogKategori" Type="Self.tblBlogKategori" Multiplicity="0..1" />
+    <End Role="tblBlog" Type="Self.tblBlog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblBlogKategori">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tblBlog">
+        <PropertyRef Name="KategoriId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblGaleri_tblGaleriKategori">
+    <End Role="tblGaleriKategori" Type="Self.tblGaleriKategori" Multiplicity="0..1" />
+    <End Role="tblGaleri" Type="Self.tblGaleri" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblGaleriKategori">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tblGaleri">
+        <PropertyRef Name="KategoriId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbGoTripModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabloKurumsal" EntityType="Self.tabloKurumsal" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAyarlar" EntityType="Self.tblAyarlar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblBlog" EntityType="Self.tblBlog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblBlogKategori" EntityType="Self.tblBlogKategori" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblGaleri" EntityType="Self.tblGaleri" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblGaleriKategori" EntityType="Self.tblGaleriKategori" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTurPaket" EntityType="Self.tblTurPaket" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tblBlog_tblBlogKategori" Association="Self.FK_tblBlog_tblBlogKategori">
+      <End Role="tblBlogKategori" EntitySet="tblBlogKategori" />
+      <End Role="tblBlog" EntitySet="tblBlog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblGaleri_tblGaleriKategori" Association="Self.FK_tblGaleri_tblGaleriKategori">
+      <End Role="tblGaleriKategori" EntitySet="tblGaleriKategori" />
+      <End Role="tblGaleri" EntitySet="tblGaleri" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

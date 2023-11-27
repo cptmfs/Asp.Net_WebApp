@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbGoTripModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tabloKurumsal">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Baslik" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Ozet" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Detay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblAyarlar">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Telefon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Adres" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Youtube" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Instagram" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Facebook" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Logo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SiteOzet" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblBlog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Baslik" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Ozet" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="KategoriId" Type="Int32" />
+    <Property Name="Resim" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Detay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Tarih" Type="DateTime" />
+    <NavigationProperty Name="tblBlogKategori" Relationship="Self.FK_tblBlog_tblBlogKategori" FromRole="tblBlog" ToRole="tblBlogKategori" />
+  </EntityType>
+  <EntityType Name="tblBlogKategori">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblBlogs" Relationship="Self.FK_tblBlog_tblBlogKategori" FromRole="tblBlogKategori" ToRole="tblBlog" />
+  </EntityType>
+  <EntityType Name="tblGaleri">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Baslik" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="KategoriId" Type="Int32" />
+    <Property Name="Resim" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblGaleriKategori" Relationship="Self.FK_tblGaleri_tblGaleriKategori" FromRole="tblGaleri" ToRole="tblGaleriKategori" />
+  </EntityType>
+  <EntityType Name="tblGaleriKategori">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblGaleris" Relationship="Self.FK_tblGaleri_tblGaleriKategori" FromRole="tblGaleriKategori" ToRole="tblGaleri" />
+  </EntityType>
+  <EntityType Name="tblTurPaket">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Fiyat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Sure" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Lokasyon" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Resim" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Detay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_tblBlog_tblBlogKategori">
+    <End Role="tblBlogKategori" Type="Self.tblBlogKategori" Multiplicity="0..1" />
+    <End Role="tblBlog" Type="Self.tblBlog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblBlogKategori">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tblBlog">
+        <PropertyRef Name="KategoriId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblGaleri_tblGaleriKategori">
+    <End Role="tblGaleriKategori" Type="Self.tblGaleriKategori" Multiplicity="0..1" />
+    <End Role="tblGaleri" Type="Self.tblGaleri" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblGaleriKategori">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tblGaleri">
+        <PropertyRef Name="KategoriId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbGoTripEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="tabloKurumsals" EntityType="Self.tabloKurumsal" />
+    <EntitySet Name="tblAyarlars" EntityType="Self.tblAyarlar" />
+    <EntitySet Name="tblBlogs" EntityType="Self.tblBlog" />
+    <EntitySet Name="tblBlogKategoris" EntityType="Self.tblBlogKategori" />
+    <EntitySet Name="tblGaleris" EntityType="Self.tblGaleri" />
+    <EntitySet Name="tblGaleriKategoris" EntityType="Self.tblGaleriKategori" />
+    <EntitySet Name="tblTurPakets" EntityType="Self.tblTurPaket" />
+    <AssociationSet Name="FK_tblBlog_tblBlogKategori" Association="Self.FK_tblBlog_tblBlogKategori">
+      <End Role="tblBlogKategori" EntitySet="tblBlogKategoris" />
+      <End Role="tblBlog" EntitySet="tblBlogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblGaleri_tblGaleriKategori" Association="Self.FK_tblGaleri_tblGaleriKategori">
+      <End Role="tblGaleriKategori" EntitySet="tblGaleriKategoris" />
+      <End Role="tblGaleri" EntitySet="tblGaleris" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
